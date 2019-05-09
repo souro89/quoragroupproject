@@ -52,8 +52,8 @@
 
     <modules>
         <module>quora-db</module>
-        <module>quora-service</module>
         <module>quora-api</module>
+        <module>quora-service</module>
     </modules>
 
 </project>
