@@ -90,6 +90,25 @@ public class QuestionBusinessService {
         }
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
+    public QuestionEntity getQuestionByUUID(String uuid,String accessToken)
+            throws AuthorizationFailedException, InvalidQuestionException {
+        UserAuthEntity userAuthEntity = userDao.validateAccessToken(accessToken);
+        if (userAuthEntity == null) {
+            throw new AuthorizationFailedException("ATHR-001", "User has not signed in");
+        } else if (userAuthEntity.getLogoutAt() != null) {
+            throw new AuthorizationFailedException("ATHR-002", "User is signed out.Sign in first to edit the question");
+        } else {
+            QuestionEntity questionEntity = questionDao.getQuestion(uuid);
+            if (questionEntity == null) {
+                throw new InvalidQuestionException("QUES-001", "The question with entered uuid whose details are to be seen does not exist");
+            } else{
+                return questionEntity;
+            }
+
+        }
+    }
+
 
     @Transactional(propagation = Propagation.REQUIRED)
     public String deleteQuestion(String uuid,String accessToken)
