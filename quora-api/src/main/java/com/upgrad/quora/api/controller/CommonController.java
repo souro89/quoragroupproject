@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.lang.invoke.MethodType;
-
 @Controller
 public class CommonController {
 
@@ -28,15 +26,11 @@ public class CommonController {
                                                               @RequestHeader("authorization") String authorization) throws AuthorizationFailedException, UserNotFoundException {
         String bearer[] = authorization.split("Bearer ");
         UserEntity userEntity = commonBusinessService.getUserDetails(userId,bearer[1]);
-
         UserDetailsResponse userDetailsResponse = new UserDetailsResponse().userName(userEntity.getUsername())
                 .aboutMe(userEntity.getAboutMe()).contactNumber(userEntity.getContactNumber())
                 .country(userEntity.getCountry()).dob(userEntity.getDob())
                 .emailAddress(userEntity.getEmail()).firstName(userEntity.getFirstName())
                 .lastName(userEntity.getLastName());
-
         return new ResponseEntity<UserDetailsResponse>(userDetailsResponse, HttpStatus.OK );
-
     }
-
 }

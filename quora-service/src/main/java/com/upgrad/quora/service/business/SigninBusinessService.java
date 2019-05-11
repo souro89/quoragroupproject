@@ -22,12 +22,10 @@ public class SigninBusinessService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     public UserAuthEntity authenticate(String username,String password) throws AuthenticationFailedException {
-
         UserEntity userEntity = userDao.getUserName(username);
         if(userEntity==null){
             throw new AuthenticationFailedException("ATH-001","This username does not exist");
         }
-
         String encryptedPassword = passwordCryptographyProvider.encrypt(password,userEntity.getSalt());
         if(encryptedPassword.equals(userEntity.getPassword())){
             JwtTokenProvider jwtTokenProvider = new JwtTokenProvider(encryptedPassword);
@@ -40,12 +38,8 @@ public class SigninBusinessService {
             userAuthEntity.setLoginAt(now);
             userAuthEntity.setLogoutAt(null);
             userAuthEntity.setExpiresAt(expiresAt);
-
             userDao.createAuthToken(userAuthEntity);
-
             return userAuthEntity;
-
-
         }else{
             throw  new AuthenticationFailedException("ATH-002","Password failed");
         }

@@ -65,6 +65,7 @@ public class AnswerController {
 
     }
 
+    //Below endpoint returns a List of answers along with question as a JSON output
     @RequestMapping(method = RequestMethod.GET,path = "answer/all/{questionId}",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<List<AnswerDetailsResponse>> getAllAnswersToQuestion(@PathVariable("questionId") String questionId,
                                                              @RequestHeader("authorization") String authorization

@@ -29,7 +29,6 @@ public class QuestionController {
 
     @RequestMapping(method = RequestMethod.POST,path = "/question/create",consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<QuestionResponse> createQuestion(@RequestHeader("authorization") String authorization, QuestionRequest questionRequest) throws AuthorizationFailedException, UserNotFoundException {
-
         String bearer[] = authorization.split("Bearer ");
         QuestionEntity questionEntity = new QuestionEntity();
         questionEntity.setContent(questionRequest.getContent());
@@ -43,7 +42,6 @@ public class QuestionController {
     public ResponseEntity<List<QuestionDetailsResponse>> getAllQuestions(@RequestHeader("authorization") String authorization) throws AuthorizationFailedException {
         String bearer[]= authorization.split("Bearer ");
         List<QuestionEntity> questions = questionBusinessService.getAllQuestions(bearer[1]);
-
         List<QuestionDetailsResponse> questionDetailsResponses = new ArrayList<>();
         for(QuestionEntity questionEntity : questions){
             questionDetailsResponses.add(new QuestionDetailsResponse()
@@ -52,12 +50,12 @@ public class QuestionController {
         return  new ResponseEntity<List<QuestionDetailsResponse>>(questionDetailsResponses,HttpStatus.OK);
     }
 
+    //Below Endpoint uses a List to return all Questions as a JSON output
     @RequestMapping(method = RequestMethod.GET,path = "question/all/{userId}",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<List<QuestionDetailsResponse>> getAllQuestionsByUserId(@PathVariable("userId") String userId,
                                     @RequestHeader("authorization") String authorization) throws AuthorizationFailedException, UserNotFoundException {
         String bearer[]= authorization.split("Bearer ");
         List<QuestionEntity> questions = questionBusinessService.getAllQuestionsByUserId(userId,bearer[1]);
-
         List<QuestionDetailsResponse> questionDetailsResponses = new ArrayList<>();
         for(QuestionEntity questionEntity : questions){
             questionDetailsResponses.add(new QuestionDetailsResponse()
